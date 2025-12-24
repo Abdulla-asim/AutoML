@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { API_BASE_URL } from "@/api/backend";
 // Note: Using window size state for confetti dimensions.
 
-export function ReportStep() {
+export function ReportStep({ onNext }: { onNext: () => void }) {
   const { mutate: generate, isPending, error } = useGenerateReport();
   const [data, setData] = useState<any | null>(null);
   // Simple window size state for confetti
@@ -107,6 +107,16 @@ export function ReportStep() {
                   Download as PDF
                 </Button>
               </a>
+            </div>
+
+            <div className="flex justify-end pt-6">
+              <Button
+                size="lg"
+                onClick={onNext}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Continue to Predictions
+              </Button>
             </div>
           </div>
         )}

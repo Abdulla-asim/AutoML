@@ -117,3 +117,37 @@ export async function generateReport(
 
   return response.json();
 }
+
+// Prediction API
+export async function getFeatureInfo(sessionId: string) {
+  const url = new URL(`${API_BASE_URL}/api/predict/features`);
+  url.searchParams.append("session_id", sessionId);
+
+  const response = await fetch(url.toString());
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Failed to fetch feature info");
+  }
+
+  return response.json();
+}
+
+export async function makePrediction(sessionId: string, features: Record<string, any>) {
+  const url = new URL(`${API_BASE_URL}/api/predict/single`);
+  url.searchParams.append("session_id", sessionId);
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ features }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Prediction failed");
+  }
+
+  return response.json();
+}
+

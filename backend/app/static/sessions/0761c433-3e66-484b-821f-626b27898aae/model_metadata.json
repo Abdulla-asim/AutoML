@@ -1,0 +1,43 @@
+{
+  "model_name": "Logistic Regression",
+  "feature_names": [
+    "size (cm)",
+    "weight (g)",
+    "avg_price (\u20b9)",
+    "shape_oval",
+    "shape_round",
+    "color_brown",
+    "color_green",
+    "color_orange",
+    "color_pink",
+    "color_purple",
+    "color_red",
+    "color_yellow",
+    "taste_sweet",
+    "taste_tangy"
+  ],
+  "target_name": "fruit_name",
+  "class_labels": [
+    "apple",
+    "banana",
+    "blueberry",
+    "cherry",
+    "coconut",
+    "custard apple",
+    "dragon fruit",
+    "grape",
+    "guava",
+    "kiwi",
+    "lychee",
+    "mango",
+    "orange",
+    "papaya",
+    "pear",
+    "pineapple",
+    "plum",
+    "pomegranate",
+    "strawberry",
+    "watermelon"
+  ],
+  "timestamp": "2025-12-24T22:58:47.226791"
+}

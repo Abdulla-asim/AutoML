@@ -1,0 +1,146 @@
+{
+  "timestamp": "2025-12-24T22:06:20.980669",
+  "parameters": {
+    "missing_strategy": "Mean",
+    "outlier_method": "Remove",
+    "scaling_method": "Standard",
+    "encoding_method": "OneHot",
+    "test_size": 0.2,
+    "impute_constant": null
+  },
+  "data_quality_before": {
+    "total_rows": 10000,
+    "total_columns": 7,
+    "missing_values": 0,
+    "missing_percent": 0.0,
+    "duplicate_rows": 246,
+    "columns": [
+      "size (cm)",
+      "shape",
+      "weight (g)",
+      "avg_price (\u20b9)",
+      "color",
+      "taste",
+      "fruit_name"
+    ]
+  },
+  "data_quality_after": {
+    "total_rows": 9754,
+    "total_columns": 15,
+    "missing_values": 0,
+    "missing_percent": 0.0,
+    "duplicate_rows": 0,
+    "columns": [
+      "size (cm)",
+      "weight (g)",
+      "avg_price (\u20b9)",
+      "shape_oval",
+      "shape_round",
+      "color_brown",
+      "color_green",
+      "color_orange",
+      "color_pink",
+      "color_purple",
+      "color_red",
+      "color_yellow",
+      "taste_sweet",
+      "taste_tangy",
+      "fruit_name"
+    ]
+  },
+  "rows_removed": 246,
+  "issues_detected": {
+    "timestamp": "2025-12-24T22:06:20.980669",
+    "issues_count": 6,
+    "issues_detected": [
+      {
+        "type": "duplicate_rows",
+        "column": "Dataset",
+        "count": 246,
+        "percent": 2.46,
+        "severity": "medium"
+      },
+      {
+        "type": "outliers",
+        "column": "size (cm)",
+        "method": "IQR",
+        "count": 804,
+        "percent": 8.04,
+        "bounds": {
+          "lower": -5.9,
+          "upper": 19.7
+        },
+        "severity": "high"
+      },
+      {
+        "type": "outliers",
+        "column": "weight (g)",
+        "method": "IQR",
+        "count": 2042,
+        "percent": 20.42,
+        "bounds": {
+          "lower": -433.41,
+          "upper": 844.49
+        },
+        "severity": "high"
+      },
+      {
+        "type": "class_imbalance",
+        "column": "shape",
+        "imbalance_ratio": 9.99,
+        "class_distribution": {
+          "round": 0.5016,
+          "oval": 0.4482,
+          "long": 0.0502
+        },
+        "severity": "medium"
+      },
+      {
+        "type": "class_imbalance",
+        "column": "color",
+        "imbalance_ratio": 4.03,
+        "class_distribution": {
+          "green": 0.2029,
+          "red": 0.1943,
+          "brown": 0.1541,
+          "yellow": 0.1002,
+          "pink": 0.0998,
+          "orange": 0.0996,
+          "purple": 0.0988,
+          "blue": 0.0503
+        },
+        "severity": "medium"
+      },
+      {
+        "type": "class_imbalance",
+        "column": "taste",
+        "imbalance_ratio": 15.6,
+        "class_distribution": {
+          "sweet": 0.7504,
+          "tangy": 0.2015,
+          "sour": 0.0481
+        },
+        "severity": "high"
+      }
+    ],
+    "severity_summary": {
+      "high": 3,
+      "medium": 3,
+      "low": 0
+    },
+    "data_shape_before": [
+      10000,
+      7
+    ],
+    "data_shape_after": [
+      9754,
+      15
+    ],
+    "rows_removed": 246,
+    "recommendations": [
+      "Remove duplicate rows from dataset",
+      "Consider removing or capping outliers using IQR method",
+      "Use resampling techniques (SMOTE) or class weights for balanced training"
+    ]
+  }
+}

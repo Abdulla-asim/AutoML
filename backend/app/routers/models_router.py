@@ -11,12 +11,12 @@ from datetime import datetime
 
 router = APIRouter()
 
-def save_model_results(session_id, results, tuned_results, hyperparams):
-    """Save model training results to session"""
+def save_model_results(session_id, results, tuned_results, hyperparams, X=None, y=None, feature_names=None, target_name=None):
+    """Save model training results to session and save best model for predictions"""
     folder_path = get_session_path(session_id)
     
     # Find best model
-    best_model = None
+    best_model_name = None
     best_score = -1
     best_reason = ""
     
@@ -35,7 +35,7 @@ def save_model_results(session_id, results, tuned_results, hyperparams):
         score = metrics.get('f1_score', metrics.get('accuracy', 0))
         if score > best_score:
             best_score = score
-            best_model = model_name
+            best_model_name = model_name
             best_reason = f"Best F1 score: {score:.4f}" if 'f1_score' in metrics else f"Best accuracy: {score:.4f}"
     
     model_results = {
@@ -53,7 +53,7 @@ def save_model_results(session_id, results, tuned_results, hyperparams):
         model_results["models"].append(model_entry)
     
     model_results["best_model"] = {
-        "name": best_model,
+        "name": best_model_name,
         "reason": best_reason,
         "f1_score": best_score
     }
@@ -62,6 +62,56 @@ def save_model_results(session_id, results, tuned_results, hyperparams):
     model_results_path = os.path.join(folder_path, "model_results.json")
     with open(model_results_path, 'w') as f:
         json.dump(model_results, f, indent=2, default=str)
+    
+    # Retrain and save the best model if training data is provided
+    if X is not None and y is not None and best_model_name:
+        try:
+            from app.services.train import get_models
+            import pickle
+            
+            # Get the model class
+            all_models = get_models(hyperparams.get('random_state', 42))
+            
+            # Remove " (Tuned)" suffix if present
+            base_model_name = best_model_name.replace(" (Tuned)", "")
+            
+            if base_model_name in all_models:
+                # Create and train the best model
+                best_model = all_models[base_model_name]
+                
+                # If it was tuned, use the best params
+                if "(Tuned)" in best_model_name and tuned_results:
+                    best_params = tuned_results[best_model_name].get('best_params', {})
+                    best_model.set_params(**best_params)
+                
+                # Train on full dataset
+                best_model.fit(X, y)
+                
+                # Save the trained model
+                model_path = os.path.join(folder_path, "best_model.pkl")
+                with open(model_path, 'wb') as f:
+                    pickle.dump(best_model, f)
+                
+                # Save model metadata
+                class_labels = []
+                if hasattr(best_model, 'classes_'):
+                    class_labels = best_model.classes_.tolist()
+                
+                metadata = {
+                    "model_name": best_model_name,
+                    "feature_names": feature_names or [],
+                    "target_name": target_name,
+                    "class_labels": class_labels,
+                    "timestamp": datetime.now().isoformat()
+                }
+                
+                metadata_path = os.path.join(folder_path, "model_metadata.json")
+                with open(metadata_path, 'w') as f:
+                    json.dump(metadata, f, indent=2)
+                
+                print(f"[MODEL] Saved best model: {best_model_name} to {model_path}")
+        except Exception as e:
+            print(f"[ERROR] Failed to save best model: {str(e)}")
     
     return model_results_path
 
@@ -139,8 +189,12 @@ def compare_models(
             "optimize": optimize
         }
         
-        # Save model results
-        model_results_path = save_model_results(session_id, results, results_tune, hyperparams)
+        # Save model results and best model
+        feature_names = X.columns.tolist() if hasattr(X, 'columns') else None
+        model_results_path = save_model_results(
+            session_id, results, results_tune, hyperparams,
+            X=X, y=y, feature_names=feature_names, target_name=target
+        )
         
         return {
             "Models": results,
@@ -156,8 +210,12 @@ def compare_models(
             "optimize": optimize
         }
         
-        # Save model results
-        model_results_path = save_model_results(session_id, results, None, hyperparams)
+        # Save model results and best model
+        feature_names = X.columns.tolist() if hasattr(X, 'columns') else None
+        model_results_path = save_model_results(
+            session_id, results, None, hyperparams,
+            X=X, y=y, feature_names=feature_names, target_name=target
+        )
         
         return {
             "models": results,

@@ -4,6 +4,7 @@ import { EdaStep } from "@/pages/steps/EdaStep";
 import { PreprocessingStep } from "@/pages/steps/PreprocessingStep";
 import { TrainingStep } from "@/pages/steps/TrainingStep";
 import { ReportStep } from "@/pages/steps/ReportStep";
+import { PredictionStep } from "@/pages/steps/PredictionStep";
 import { useSession } from "@/hooks/use-automl";
 import { AnimatePresence, motion } from "framer-motion";
 import { UploadCloud, BarChart3, Settings, BrainCircuit, FileText, CheckCircle } from "lucide-react";
@@ -14,6 +15,7 @@ const steps = [
   { id: 3, name: "Preprocessing", icon: Settings, color: "from-pink-500 to-pink-600" },
   { id: 4, name: "Training", icon: BrainCircuit, color: "from-indigo-500 to-indigo-600" },
   { id: 5, name: "Report", icon: FileText, color: "from-green-500 to-green-600" },
+  { id: 6, name: "Predict", icon: CheckCircle, color: "from-orange-500 to-orange-600" },
 ];
 
 export default function Home() {
@@ -44,7 +46,9 @@ export default function Home() {
       case 4:
         return <TrainingStep onNext={handleNext} />;
       case 5:
-        return <ReportStep />;
+        return <ReportStep onNext={handleNext} />;
+      case 6:
+        return <PredictionStep />;
       default:
         return <UploadStep onNext={handleNext} />;
     }
@@ -82,7 +86,7 @@ export default function Home() {
               <div
                 className="absolute left-5 top-10 w-0.5 bg-gradient-to-b from-primary to-accent transition-all duration-300"
                 style={{
-                  height: `${((Math.min(currentStep, 5) - 1) / 4) * 100}%`,
+                  height: `${((Math.min(currentStep, 6) - 1) / 5) * 100}%`,
                   minHeight: "40px"
                 }}
               />
@@ -101,28 +105,26 @@ export default function Home() {
                       onClick={() => step.id <= completedStep && setCurrentStep(step.id)}
                       disabled={isPending}
                       whileHover={!isPending ? { x: 4 } : {}}
-                      className={`w-full flex items-center gap-4 p-3 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? "bg-primary/10 text-primary font-semibold"
-                          : isCompleted
-                            ? "text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/20 cursor-pointer"
-                            : "text-muted-foreground opacity-50 cursor-not-allowed"
-                      }`}
+                      className={`w-full flex items-center gap-4 p-3 rounded-lg transition-all duration-200 ${isActive
+                        ? "bg-primary/10 text-primary font-semibold"
+                        : isCompleted
+                          ? "text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/20 cursor-pointer"
+                          : "text-muted-foreground opacity-50 cursor-not-allowed"
+                        }`}
                     >
                       <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
-                          isActive
-                            ? "bg-gradient-to-br from-primary to-accent text-white shadow-lg shadow-primary/30"
-                            : isCompleted
-                              ? "bg-green-500 text-white"
-                              : "bg-muted text-muted-foreground"
-                        }`}
+                        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${isActive
+                          ? "bg-gradient-to-br from-primary to-accent text-white shadow-lg shadow-primary/30"
+                          : isCompleted
+                            ? "bg-green-500 text-white"
+                            : "bg-muted text-muted-foreground"
+                          }`}
                       >
                         {isCompleted ? <CheckCircle className="w-5 h-5" /> : <StepIcon className="w-5 h-5" />}
                       </div>
                       <div className="text-left">
                         <div className="text-sm font-medium">{step.name}</div>
-                        <div className="text-xs opacity-70">{`Step ${step.id} of 5`}</div>
+                        <div className="text-xs opacity-70">{`Step ${step.id} of 6`}</div>
                       </div>
                     </motion.button>
                   );
@@ -136,11 +138,11 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-primary/5 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">Progress</div>
-                <div className="text-2xl font-bold text-primary mt-1">{currentStep}/5</div>
+                <div className="text-2xl font-bold text-primary mt-1">{currentStep}/6</div>
               </div>
               <div className="bg-accent/5 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">Status</div>
-                <div className="text-xs text-accent font-semibold mt-1">{currentStep === 5 ? "Complete" : "In Progress"}</div>
+                <div className="text-xs text-accent font-semibold mt-1">{currentStep === 6 ? "Complete" : "In Progress"}</div>
               </div>
             </div>
           </div>

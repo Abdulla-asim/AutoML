@@ -7,6 +7,7 @@ from app.routers.models_router import router as models_router
 from app.routers.preprocess_router import router as preprocess_router
 from app.routers.report_router import router as report_router
 from app.routers.issues_router import router as issues_router
+from app.routers.predict_router import router as predict_router
 
 app = FastAPI(title="AutoML Backend")
 
@@ -27,6 +28,7 @@ app.include_router(preprocess_router, prefix="/api/preprocess", tags=["Preproces
 app.include_router(models_router, prefix="/api/models", tags=["Models"])
 app.include_router(report_router, prefix="/api/report", tags=["Report"])
 app.include_router(issues_router, prefix="/api/issues", tags=["Issues"])
+app.include_router(predict_router, prefix="/api/predict", tags=["Prediction"])
 
 
 @app.get("/")
