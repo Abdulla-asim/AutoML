@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  /* Soft, cute, professional palette */
+  --background: 240 30% 97%;
+  --foreground: 220 20% 18%;
+  --primary: 239 84% 67%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 220 60% 93%;
+  --secondary-foreground: 220 20% 20%;
+  --muted: 220 30% 92%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 262 83% 62%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 220 30% 88%;
+  --input: 220 30% 88%;
+  --ring: 239 84% 67%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 18%;
+  --radius: 0.875rem;
+}
+
+.dark {
+  --background: 220 20% 10%;
+  --foreground: 210 30% 95%;
+  --primary: 239 84% 67%;
+  --primary-foreground: 220 20% 10%;
+  --secondary: 217 30% 22%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 30% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 262 83% 62%;
+  --accent-foreground: 220 20% 10%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 30% 25%;
+  --input: 217 30% 25%;
+  --ring: 239 84% 67%;
+  --card: 220 20% 12%;
+  --card-foreground: 210 30% 95%;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    @apply text-foreground antialiased;
+    background: linear-gradient(135deg, hsl(245 65% 22%) 0%, hsl(215 55% 28%) 50%, hsl(240 35% 18%) 100%);
+  }
+
+  .dark body {
+    background: linear-gradient(135deg, hsl(245 65% 22%) 0%, hsl(215 55% 28%) 50%, hsl(240 35% 18%) 100%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+@layer components {
+  .stat-card {
+    @apply relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105;
+  }
+
+  .stat-icon {
+    @apply flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center font-semibold text-sm;
+  }
+
+  .data-table {
+    @apply w-full text-sm;
+  }
+
+  .data-table thead {
+    @apply bg-primary/5 border-b-2 border-primary/10;
+  }
+
+  .data-table th {
+    @apply px-6 py-3 text-left font-semibold text-foreground uppercase tracking-wider text-xs;
+  }
+
+  .data-table tbody tr {
+    @apply border-b border-border/50 hover:bg-primary/5 transition-colors;
+  }
+
+  .data-table td {
+    @apply px-6 py-3;
+  }
+
+  .helper-text {
+    @apply text-xs text-muted-foreground font-medium uppercase tracking-wide;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-border/50 bg-gradient-to-r to-transparent;
+  }
+}
