@@ -220,7 +220,7 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                   Feature Distributions
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {Object.entries(distributionData).slice(0, 6).map(([column, dist]: [string, any], idx) => {
+                  {Object.entries(distributionData).map(([column, dist]: [string, any], idx) => {
                     const chartData = dist.bin_centers.map((center: number, i: number) => ({
                       bin: center.toFixed(2),
                       count: dist.values[i]
@@ -253,11 +253,6 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     );
                   })}
                 </div>
-                {Object.keys(distributionData).length > 6 && (
-                  <p className="text-sm text-muted-foreground text-center">
-                    Showing 6 of {Object.keys(distributionData).length} distributions
-                  </p>
-                )}
               </div>
             )}
 
@@ -269,7 +264,7 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                   Categorical Features
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {Object.entries(categoricalData).slice(0, 4).map(([column, cat]: [string, any], idx) => {
+                  {Object.entries(categoricalData).map(([column, cat]: [string, any], idx) => {
                     const chartData = cat.labels.map((label: string, i: number) => ({
                       name: label,
                       count: cat.values[i]
@@ -305,11 +300,6 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     );
                   })}
                 </div>
-                {Object.keys(categoricalData).length > 4 && (
-                  <p className="text-sm text-muted-foreground text-center">
-                    Showing 4 of {Object.keys(categoricalData).length} categorical features
-                  </p>
-                )}
               </div>
             )}
 
