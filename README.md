@@ -568,7 +568,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-**Project Maintainer**: Abdulla Asim
+**Project Maintainer**: Mehreen, Abdullah Asim, Rimsha Nosheen
 
 **Repository**: [https://github.com/Abdulla-asim/AutoML](https://github.com/Abdulla-asim/AutoML)
 
@@ -576,7 +576,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by Abdulla Asim**
+**Made with ❤️ by Mehreen, Abdullah Asim, and Rimsha Nosheen**
 
 ⭐ Star this repo if you find it helpful!
 
