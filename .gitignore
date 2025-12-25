@@ -211,5 +211,5 @@ __marimo__/
 .xlsx
 
 # Session Storage
-app/static/sessions
+backend/app/static/sessions
 

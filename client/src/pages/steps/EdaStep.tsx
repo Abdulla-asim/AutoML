@@ -14,8 +14,7 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell,
-  Legend
+  Cell
 } from 'recharts';
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -36,13 +35,9 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
   // Prepare missing values for chart
   const missingData = data?.missing_values
     ? Object.entries(data.missing_values)
-      .filter(([_, count]) => count > 0)
-      .map(([col, count]) => ({ name: col, count }))
+      .filter(([_, count]) => (count as number) > 0)
+      .map(([col, count]) => ({ name: col, count: count as number }))
     : [];
-
-  // Prepare correlation heatmap data
-  const correlationData = data?.correlation_matrix;
-  const hasCorrelation = correlationData?.correlation_matrix?.length > 0;
 
   // Prepare distribution data
   const distributionData = data?.distributions?.distributions || {};
@@ -136,10 +131,10 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     {Object.entries(data.stats || {}).slice(0, 10).map(([col, stats]) => (
                       <tr key={col}>
                         <td className="font-medium text-foreground">{col}</td>
-                        <td className="text-right">{stats['mean']?.toFixed(2) || '-'}</td>
-                        <td className="text-right">{stats['std']?.toFixed(2) || '-'}</td>
-                        <td className="text-right">{stats['min']?.toFixed(2) || '-'}</td>
-                        <td className="text-right">{stats['max']?.toFixed(2) || '-'}</td>
+                        <td className="text-right">{(stats as any)['mean']?.toFixed(2) || '-'}</td>
+                        <td className="text-right">{(stats as any)['std']?.toFixed(2) || '-'}</td>
+                        <td className="text-right">{(stats as any)['min']?.toFixed(2) || '-'}</td>
+                        <td className="text-right">{(stats as any)['max']?.toFixed(2) || '-'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -166,8 +161,8 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={missingData} layout="vertical">
                         <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
-                        <XAxis type="number" hide />
-                        <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 12 }} />
+                        <XAxis type="number" label={{ value: 'Missing Count', position: 'bottom', offset: 0 }} />
+                        <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 12 }} label={{ value: 'Features', angle: -90, position: 'insideLeft' }} />
                         <Tooltip
                           cursor={{ fill: 'transparent' }}
                           contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
@@ -234,18 +229,19 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     return (
                       <Card key={column} className="p-6">
                         <h4 className="text-md font-semibold mb-4 text-foreground">{column}</h4>
-                        <div className="h-64">
+                        <div className="h-80">
                           <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData}>
+                            <BarChart data={chartData} margin={{ top: 5, right: 20, bottom: 60, left: 20 }}>
                               <CartesianGrid strokeDasharray="3 3" />
                               <XAxis
                                 dataKey="bin"
                                 tick={{ fontSize: 10 }}
                                 angle={-45}
                                 textAnchor="end"
-                                height={60}
+                                height={70}
+                                label={{ value: 'Value Range', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle' } }}
                               />
-                              <YAxis tick={{ fontSize: 12 }} />
+                              <YAxis tick={{ fontSize: 12 }} label={{ value: 'Frequency', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }} />
                               <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                               />
@@ -282,9 +278,9 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                     return (
                       <Card key={column} className="p-6">
                         <h4 className="text-md font-semibold mb-4 text-foreground">{column}</h4>
-                        <div className="h-64">
+                        <div className="h-80">
                           <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData}>
+                            <BarChart data={chartData} margin={{ top: 5, right: 20, bottom: 70, left: 20 }}>
                               <CartesianGrid strokeDasharray="3 3" />
                               <XAxis
                                 dataKey="name"
@@ -292,8 +288,9 @@ export function EdaStep({ onNext }: { onNext: () => void }) {
                                 angle={-45}
                                 textAnchor="end"
                                 height={80}
+                                label={{ value: 'Categories', position: 'insideBottom', offset: -15, style: { textAnchor: 'middle' } }}
                               />
-                              <YAxis tick={{ fontSize: 12 }} />
+                              <YAxis tick={{ fontSize: 12 }} label={{ value: 'Count', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }} />
                               <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                               />
