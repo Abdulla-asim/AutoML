@@ -164,24 +164,15 @@ async def analyze_dataset(
             for col, info in report["missing_values"]["per_feature"].items()
         }
 
-        # 3️⃣ plot_images (optional)
-        plot_images = []
-        if include_visualizations:
-            for plot in report.get("plots", []):
-                if "image_base64" in plot:
-                    plot_images.append({
-                        "title": plot.get("title", "EDA Plot"),
-                        "image_base64": plot["image_base64"]
-                    })
-
-        # 4️⃣ FINAL RESPONSE
+        # 3️⃣ FINAL RESPONSE with all visualization data
         response = {
             "stats": stats,
-            "missing_values": missing_values
+            "missing_values": missing_values,
+            "correlation_matrix": report.get("correlation_analysis", {}),
+            "distributions": report.get("distribution_analysis", {}),
+            "categorical": report.get("categorical_analysis", {}),
+            "train_test_split": report.get("train_test_split", {})
         }
-
-        if plot_images:
-            response["plot_images"] = plot_images
 
         return response
 
